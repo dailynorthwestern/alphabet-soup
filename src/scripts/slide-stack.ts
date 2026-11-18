@@ -2,40 +2,28 @@ const stack = document.querySelector<HTMLElement>(".slide-stack");
 
 if (stack) {
   const pinned = stack.querySelectorAll<HTMLElement>("[data-pin]");
-  const scenes = stack.querySelectorAll<HTMLElement>("[data-scene]");
+  const cards = stack.querySelectorAll<HTMLElement>("[data-card-fade]");
   const siteHeader = document.querySelector<HTMLElement>(".site-header");
   const fadeDistance = 110;
+  const entryOpacity = 0.6;
   let pendingFrame = 0;
 
-  stack.style.setProperty("--scene-fade-distance", `${fadeDistance}px`);
-
-  function updateScenes() {
-    // The parent starts at the scene's natural position and is unaffected by its translation.
-    const distances = Array.from(
-      scenes,
-      (scene) => scene.parentElement?.getBoundingClientRect().top ?? 0
-    );
-    scenes.forEach((scene, index) => {
-      const distance = distances[index];
-      const approaching = distance > 0;
-      const fading = approaching && distance < fadeDistance;
-      scene.toggleAttribute("data-approaching", approaching);
-      scene.style.setProperty(
-        "--scene-opacity",
-        fading ? String(1 - distance / fadeDistance) : "0"
-      );
-      scene.style.setProperty(
-        "--scene-offset",
-        fading ? `${-distance}px` : "0px"
-      );
+  function updateCardFades() {
+    const viewportBottom = document.documentElement.clientHeight;
+    const tops = Array.from(cards, (card) => card.getBoundingClientRect().top);
+    cards.forEach((card, index) => {
+      const entered = viewportBottom - tops[index];
+      const progress = Math.max(0, Math.min(1, entered / fadeDistance));
+      const opacity = entryOpacity + (1 - entryOpacity) * progress;
+      card.style.setProperty("--card-opacity", String(opacity));
     });
   }
 
-  function scheduleScenes() {
+  function scheduleCardFades() {
     if (pendingFrame) return;
     pendingFrame = requestAnimationFrame(() => {
       pendingFrame = 0;
-      updateScenes();
+      updateCardFades();
     });
   }
 
@@ -44,24 +32,24 @@ if (stack) {
       if (target instanceof HTMLElement) {
         const height = borderBoxSize[0]?.blockSize ?? target.offsetHeight;
         target.style.setProperty("--slide-height", `${height}px`);
+        target.dataset.measured = "";
       }
     }
-    stack.dataset.scenesReady = "";
-    updateScenes();
+    updateCardFades();
   });
 
   for (const slide of pinned) {
     observer.observe(slide, { box: "border-box" });
   }
 
-  window.addEventListener("scroll", scheduleScenes, { passive: true });
-  window.addEventListener("resize", scheduleScenes);
-  window.addEventListener("pageshow", scheduleScenes);
+  window.addEventListener("scroll", scheduleCardFades, { passive: true });
+  window.addEventListener("resize", scheduleCardFades);
+  window.addEventListener("pageshow", scheduleCardFades);
 
   // Keep covered controls in the tab order and reveal their scene when focused.
   stack.addEventListener("focusin", ({ target }) => {
     if (!(target instanceof HTMLElement)) return;
-    const slide = target.closest<HTMLElement>("[data-pin]");
+    const slide = target.closest<HTMLElement>("[data-pin][data-measured]");
     const track = slide?.parentElement;
     if (!slide || !track) return;
 
@@ -88,7 +76,7 @@ if (stack) {
         Math.min(maxOffset, targetCenter - (headerBottom + viewportHeight) / 2)
       );
       window.scrollTo({ top: Math.ceil(start + offset), behavior: "instant" });
-      updateScenes();
+      updateCardFades();
     });
   });
 }

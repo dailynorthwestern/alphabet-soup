@@ -19,10 +19,8 @@ import LOCFacultyCard from '../components/loc/LOCFacultyCard.astro';
 <Layout>
   <Header />
   <main id="main" class="slide-stack" tabindex="-1">
-    <div class="scene-hold scene-hold--overlap scene-hold--hero">
-      <div class="slide slide--hero" data-slide data-pin>
-        <Hero />
-      </div>
+    <div class="slide slide--hero" data-slide>
+      <Hero />
     </div>
     <Story id="mmss" title="MMSS">
       <MMSSStudentCard slot="student" />
@@ -34,7 +32,7 @@ import LOCFacultyCard from '../components/loc/LOCFacultyCard.astro';
       <ISPStory slot="article" />
       <ISPFacultyCard slot="faculty" />
     </Story>
-    <Story id="loc" title="LOC" last>
+    <Story id="loc" title="LOC">
       <LOCStudentCard slot="student" />
       <LOCStory slot="article" />
       <LOCFacultyCard slot="faculty" />

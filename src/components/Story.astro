@@ -2,34 +2,29 @@
 interface Props {
   id: string;
   title: string;
-  last?: boolean;
 }
 
-const { id, title, last = false } = Astro.props;
+const { id, title } = Astro.props;
 ---
 
 <article class="story" aria-labelledby={`${id}-heading`}>
   <div id={id} class="article-transition" tabindex="-1">
-    <div class="slide slide--student" data-slide data-pin data-scene>
+    <div class="slide slide--student" data-slide data-pin data-card-fade>
       <h2 id={`${id}-heading`}>{title}</h2>
       <slot name="student" />
     </div>
-    <div class="scene-hold scene-hold--overlap">
-      <div class="slide slide--article" data-slide data-pin>
-        <slot name="article" />
-      </div>
+    <div class="slide slide--article" data-slide>
+      <slot name="article" />
     </div>
   </div>
-  <div class:list={['scene-hold', { 'scene-hold--overlap': !last }]}>
-    <div class="slide slide--faculty" data-slide data-pin data-scene>
-      <slot name="faculty" />
-    </div>
+  <div class="slide slide--faculty" data-slide data-card-fade>
+    <slot name="faculty" />
   </div>
 </article>
 
 <style>
   .article-transition {
-    /* Card padding clears the header. Land one pixel past the cut to allow for scroll rounding. */
+    /* The card already pads its heading below the header. */
     scroll-margin-top: calc(0px - var(--header-height) - 1px);
   }
 
