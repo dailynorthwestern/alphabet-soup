@@ -2,9 +2,10 @@
 interface Props {
   id: string;
   title: string;
+  holdFaculty?: boolean;
 }
 
-const { id, title } = Astro.props;
+const { id, title, holdFaculty = false } = Astro.props;
 ---
 
 <article class="story" aria-labelledby={`${id}-heading`}>
@@ -17,8 +18,10 @@ const { id, title } = Astro.props;
       <slot name="article" />
     </div>
   </div>
-  <div class="slide slide--faculty" data-slide data-card-fade>
-    <slot name="faculty" />
+  <div class="faculty-transition">
+    <div class="slide slide--faculty" data-slide data-card-fade data-pin={holdFaculty ? '' : undefined}>
+      <slot name="faculty" />
+    </div>
   </div>
 </article>
 

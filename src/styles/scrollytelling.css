@@ -43,6 +43,10 @@
   align-self: stretch;
 }
 
+.faculty-transition {
+  --faculty-scroll-hold: calc(var(--slide-viewport) * 0.1);
+}
+
 /* Only the article layers over the pinned student card. */
 .article-transition {
   --student-scroll-hold: calc(var(--slide-viewport) * 0.1);
@@ -52,6 +56,13 @@
 @media screen {
   .slide--student[data-measured] + .slide--article {
     margin-block-start: var(--student-scroll-hold);
+  }
+
+  /* The faculty card releases at the end of this space and scrolls away. */
+  .faculty-transition:has(> .slide--faculty[data-measured])::after {
+    content: "";
+    display: block;
+    height: var(--faculty-scroll-hold);
   }
 }
 
