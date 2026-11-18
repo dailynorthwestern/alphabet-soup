@@ -1,0 +1,68 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  last?: boolean;
+}
+
+const { id, title, last = false } = Astro.props;
+---
+
+<article class="story" aria-labelledby={`${id}-heading`}>
+  <div id={id} class="article-transition" tabindex="-1">
+    <div class="slide slide--student" data-slide data-pin data-scene>
+      <h2 id={`${id}-heading`}>{title}</h2>
+      <slot name="student" />
+    </div>
+    <div class="scene-hold scene-hold--overlap">
+      <div class="slide slide--article" data-slide data-pin>
+        <slot name="article" />
+      </div>
+    </div>
+  </div>
+  <div class:list={['scene-hold', { 'scene-hold--overlap': !last }]}>
+    <div class="slide slide--faculty" data-slide data-pin data-scene>
+      <slot name="faculty" />
+    </div>
+  </div>
+</article>
+
+<style>
+  .article-transition {
+    /* Card padding clears the header. Land one pixel past the cut to allow for scroll rounding. */
+    scroll-margin-top: calc(0px - var(--header-height) - 1px);
+  }
+
+  h2 {
+    width: 80%;
+    margin: 0 auto;
+    font: 400 clamp(3rem, 7vw, 6rem) / 1 var(--font-display);
+    color: var(--dark-red);
+  }
+
+  .story :global(.interview-card) {
+    width: 80%;
+    min-width: 0;
+    margin-inline: auto;
+    display: grid;
+    align-items: center;
+  }
+
+  .story :global(.interview-grid) {
+    display: grid;
+    grid-template-columns: var(--interview-columns, minmax(0, 1fr) minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 6rem);
+  }
+
+  @media (max-width: 700px) {
+    h2,
+    .story :global(.interview-card) {
+      width: calc(100% - 2rem);
+    }
+
+    .story :global(.interview-grid) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  transcript?: string;
+}
+
+const { transcript = 'Transcript placeholder' } = Astro.props;
+---
+
+<details>
+  <summary>Read transcript</summary>
+  <p>{transcript}</p>
+</details>
+
+<style>
+  summary {
+    cursor: pointer;
+    color: var(--dark-red);
+    font-weight: 700;
+    width: fit-content;
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+    white-space: pre-line;
+  }
+</style>

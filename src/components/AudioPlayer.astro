@@ -1,0 +1,30 @@
+---
+interface Props {
+  src?: string;
+}
+
+const { src } = Astro.props;
+---
+
+<div class="audio-player">
+  {!src && <span>Student audio placeholder</span>}
+  <audio controls preload="metadata" src={src} aria-label="Student audio"></audio>
+</div>
+
+<style>
+  .audio-player {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  span {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  audio {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+</style>

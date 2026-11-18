@@ -1,0 +1,114 @@
+.slide-stack {
+  --slide-viewport: 100vh;
+  position: relative;
+  isolation: isolate;
+  margin-top: calc(-1 * var(--header-height));
+}
+
+@supports (height: 100dvh) {
+  .slide-stack {
+    --slide-viewport: 100dvh;
+  }
+}
+
+.slide {
+  min-height: var(--slide-viewport);
+  background: var(--bright-yellow);
+  overflow-wrap: anywhere;
+  pointer-events: auto;
+}
+
+.slide-stack[data-scenes-ready] [data-pin] {
+  position: sticky;
+  /* Taller sections scroll through to their last viewport before holding. */
+  top: min(0px, calc(var(--slide-viewport) - var(--slide-height)));
+}
+
+/* Extend the pin through the approach of the next scene without adding a gap. */
+.slide-stack[data-scenes-ready] .scene-hold::after {
+  content: "";
+  display: block;
+  height: var(--slide-viewport);
+}
+
+/* The first scene only needs enough scroll space for the fade itself. */
+.slide-stack[data-scenes-ready] .scene-hold--hero::after {
+  height: var(--scene-fade-distance);
+}
+
+.slide-stack[data-scenes-ready] .scene-hold--overlap {
+  margin-bottom: calc(-1 * var(--slide-viewport));
+}
+
+[data-scene][data-approaching] {
+  opacity: var(--scene-opacity, 0);
+  translate: 0 var(--scene-offset, 0px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-scene][data-approaching] {
+    opacity: 0;
+    translate: none;
+  }
+}
+
+.slide--hero {
+  padding-top: var(--header-height);
+}
+
+.slide--student,
+.slide--faculty {
+  display: grid;
+  padding: calc(var(--header-height) + 1rem) 0 clamp(1.5rem, 4vh, 3rem);
+  align-items: center;
+}
+
+.slide--student {
+  grid-template-rows: auto 1fr;
+  gap: clamp(1rem, 3vh, 2rem);
+}
+
+.slide--faculty > .interview-card {
+  align-self: stretch;
+}
+
+/* Paint the article above the student card and each scene above its predecessor. */
+.story,
+.article-transition,
+.scene-hold {
+  display: flow-root;
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.scene-hold {
+  position: relative;
+}
+
+.slide--article {
+  padding-top: var(--header-height);
+}
+
+@media print {
+  .slide-stack {
+    margin-top: 0;
+  }
+
+  .slide-stack[data-scenes-ready] [data-pin] {
+    position: static;
+  }
+
+  .slide-stack[data-scenes-ready] .scene-hold {
+    margin-bottom: 0;
+  }
+
+  .slide-stack[data-scenes-ready] .scene-hold::after {
+    display: none;
+  }
+
+  [data-scene][data-approaching] {
+    opacity: 1;
+    translate: none;
+  }
+}

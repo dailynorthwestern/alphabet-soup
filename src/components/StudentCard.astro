@@ -1,0 +1,54 @@
+---
+import AudioPlayer from './AudioPlayer.astro';
+import MediaPlaceholder from './MediaPlaceholder.astro';
+import TranscriptDropdown from './TranscriptDropdown.astro';
+
+interface Props {
+  storyTitle: string;
+  image?: { src: string; alt: string };
+  quote?: string;
+  audioSrc?: string;
+  transcript?: string;
+}
+
+const { storyTitle, image, quote, audioSrc, transcript } = Astro.props;
+---
+
+<section class="interview-card" aria-label={`${storyTitle} student introduction`}>
+  <div class="interview-grid">
+    <div class="student-media">
+      {image
+        ? <img src={image.src} alt={image.alt} loading="lazy" />
+        : <MediaPlaceholder label="Student profile photo placeholder" />}
+      <AudioPlayer src={audioSrc} />
+      <TranscriptDropdown transcript={transcript} />
+    </div>
+    <div class="student-quote">
+      {quote ? <blockquote>{quote}</blockquote> : <p>Student quote placeholder</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .student-media {
+    display: grid;
+    gap: 0.85rem;
+    --media-ratio: 4 / 3;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: var(--media-ratio);
+    object-fit: cover;
+  }
+
+  .student-quote {
+    font: 400 clamp(2.5rem, 5vw, 6rem) / 1.04 var(--font-display);
+    color: var(--dark-red);
+  }
+
+  blockquote,
+  p {
+    margin: 0;
+  }
+</style>

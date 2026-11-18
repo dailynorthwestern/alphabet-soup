@@ -1,0 +1,62 @@
+---
+import MediaPlaceholder from './MediaPlaceholder.astro';
+import VideoPlayer from './VideoPlayer.astro';
+
+interface Props {
+  storyTitle: string;
+  image?: { src: string; alt: string };
+  quote?: string;
+  videoSrc?: string;
+  videoPoster?: string;
+  captionsSrc?: string;
+}
+
+const { storyTitle, image, quote, videoSrc, videoPoster, captionsSrc } = Astro.props;
+---
+
+<section class="interview-card faculty-card" aria-label={`${storyTitle} faculty closing`}>
+  <div class="interview-grid">
+    <VideoPlayer src={videoSrc} poster={videoPoster} captionsSrc={captionsSrc} />
+    <div class="faculty-profile">
+      {image
+        ? <img src={image.src} alt={image.alt} loading="lazy" />
+        : <MediaPlaceholder label="Faculty profile placeholder" />}
+      {quote ? <blockquote>{quote}</blockquote> : <p>Faculty quote placeholder</p>}
+    </div>
+  </div>
+  <hr />
+</section>
+
+<style>
+  .faculty-card {
+    --interview-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: 1fr auto;
+  }
+
+  .faculty-profile {
+    --media-ratio: 3 / 2;
+    --media-surface: var(--noodle);
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  img {
+    width: 100%;
+    aspect-ratio: var(--media-ratio);
+    object-fit: cover;
+  }
+
+  blockquote,
+  p {
+    margin: 0;
+    font: 400 clamp(1.5rem, 3vw, 3rem) / 1.15 var(--font-display);
+    color: var(--dark-red);
+  }
+
+  hr {
+    width: 100%;
+    margin: clamp(2rem, 5vw, 4rem) 0 0;
+    border: 0;
+    border-top: 1px solid var(--dark-red);
+  }
+</style>

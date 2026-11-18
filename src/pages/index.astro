@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Story from '../components/Story.astro';
+import '../styles/scrollytelling.css';
+import Footer from '../components/Footer.astro';
+import MMSSStudentCard from '../components/mmss/MMSSStudentCard.astro';
+import MMSSStory from '../components/mmss/MMSSStory.astro';
+import MMSSFacultyCard from '../components/mmss/MMSSFacultyCard.astro';
+import ISPStudentCard from '../components/isp/ISPStudentCard.astro';
+import ISPStory from '../components/isp/ISPStory.astro';
+import ISPFacultyCard from '../components/isp/ISPFacultyCard.astro';
+import LOCStudentCard from '../components/loc/LOCStudentCard.astro';
+import LOCStory from '../components/loc/LOCStory.astro';
+import LOCFacultyCard from '../components/loc/LOCFacultyCard.astro';
+---
+
+<Layout>
+  <Header />
+  <main id="main" class="slide-stack" tabindex="-1">
+    <div class="scene-hold scene-hold--overlap scene-hold--hero">
+      <div class="slide slide--hero" data-slide data-pin>
+        <Hero />
+      </div>
+    </div>
+    <Story id="mmss" title="MMSS">
+      <MMSSStudentCard slot="student" />
+      <MMSSStory slot="article" />
+      <MMSSFacultyCard slot="faculty" />
+    </Story>
+    <Story id="isp" title="ISP">
+      <ISPStudentCard slot="student" />
+      <ISPStory slot="article" />
+      <ISPFacultyCard slot="faculty" />
+    </Story>
+    <Story id="loc" title="LOC" last>
+      <LOCStudentCard slot="student" />
+      <LOCStory slot="article" />
+      <LOCFacultyCard slot="faculty" />
+    </Story>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  import '../scripts/slide-stack';
+</script>

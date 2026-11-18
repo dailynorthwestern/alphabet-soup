@@ -1,0 +1,109 @@
+---
+import { Image } from 'astro:assets';
+import background from '../assets/Background.png';
+import hero from '../assets/hero/hero.png';
+import mmss from '../assets/hero/MMSS.png';
+import isp from '../assets/hero/ISP.png';
+import loc from '../assets/hero/LOC.png';
+
+const artworkRatio = hero.width / hero.height;
+// Hit areas surround the lettering on each transparent PNG's original canvas.
+const stories = [
+  { id: 'mmss', label: 'MMSS', image: mmss, x: 975, y: 680, width: 585, height: 420 },
+  { id: 'isp', label: 'ISP', image: isp, x: 1560, y: 1010, width: 465, height: 430 },
+  { id: 'loc', label: 'LOC', image: loc, x: 960, y: 1220, width: 540, height: 430 },
+];
+---
+
+<section class="hero" aria-label="Alphabet Soup" style={`--artwork-ratio: ${artworkRatio}; background-image: url("${background.src}")`}>
+  <div class="hero-artwork">
+    <Image
+      src={hero}
+      alt="Alphabet Soup from The Daily Northwestern"
+      format="png"
+      width={1800}
+      widths={[1200, 1800, 2400, 3200, hero.width]}
+      sizes={`${artworkRatio * 100}dvh`}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <nav class="story-nav" aria-label="Alphabet Soup stories">
+    {stories.map(({ id, label, image, x, y, width, height }) => {
+      // The bowl moved 240 px left and 20 px down on the replacement canvas.
+      const left = (x + width / 2 - 240) / hero.width * 100;
+      const top = (y + height / 2 + 20) / hero.height * 100;
+      return (
+        <a
+          href={`#${id}`}
+          style={`--button-x: ${left}%; --button-y: ${top}%; --button-width: ${width / hero.width * 100}%; --button-ratio: ${width} / ${height}`}
+        >
+          <Image
+            src={image}
+            alt={label}
+            format="png"
+            width={1800}
+            loading="eager"
+            style={`--lettering-width: ${image.width / width * 100}%; --lettering-x: ${-x / width * 100}%; --lettering-y: ${-y / height * 100}%`}
+          />
+        </a>
+      );
+    })}
+  </nav>
+</section>
+
+<style>
+  .hero {
+    --available-height: calc(var(--slide-viewport, 100dvh) - var(--header-height));
+    position: relative;
+    height: var(--available-height);
+    isolation: isolate;
+    background-color: var(--bright-yellow);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .hero-artwork {
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .hero-artwork img {
+    width: auto;
+    max-width: none;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .story-nav {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(100%, calc(var(--available-height) * var(--artwork-ratio)));
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .story-nav a {
+    position: absolute;
+    left: var(--button-x);
+    top: var(--button-y);
+    width: max(64px, var(--button-width));
+    aspect-ratio: var(--button-ratio);
+    translate: -50% -50%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    pointer-events: auto;
+  }
+
+  .story-nav img {
+    position: absolute;
+    top: var(--lettering-y);
+    left: var(--lettering-x);
+    width: var(--lettering-width);
+    max-width: none;
+    height: auto;
+  }
+</style>

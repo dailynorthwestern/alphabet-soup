@@ -1,0 +1,26 @@
+---
+import { getImage } from 'astro:assets';
+import mikiPhoto from '../../assets/mmss/miki.png';
+import StudentCard from '../StudentCard.astro';
+
+const photo = await getImage({ src: mikiPhoto, width: Math.min(mikiPhoto.width, 1200), format: 'webp' });
+const audioSrc = `${import.meta.env.BASE_URL}assets/audio/miki_student_card.mp3`;
+
+// Paste the opening student pull quote here.
+const quote = `"I think it's a study of learning how to interpret the world or a situation using numbers."`;
+---
+
+<StudentCard
+  storyTitle="MMSS"
+  quote={quote}
+  image={{ src: photo.src, alt: 'Portrait of Miki Hayashi' }}
+  audioSrc={audioSrc}
+/>
+
+<style>
+  :global(#mmss .student-media img) {
+    max-width: 400px;
+    aspect-ratio: auto;
+    height: auto;
+  }
+</style>

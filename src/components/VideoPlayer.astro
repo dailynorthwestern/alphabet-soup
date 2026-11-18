@@ -1,0 +1,42 @@
+---
+interface Props {
+  src?: string;
+  poster?: string;
+  captionsSrc?: string;
+}
+
+const { src, poster, captionsSrc } = Astro.props;
+---
+
+<div class="video-player">
+  <video controls playsinline preload="metadata" src={src} poster={poster} aria-label="Faculty video">
+    {captionsSrc && <track kind="captions" src={captionsSrc} srclang="en" label="English" />}
+  </video>
+  {!src && !poster && <span>Faculty video placeholder</span>}
+</div>
+
+<style>
+  .video-player {
+    position: relative;
+  }
+
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--dark-red);
+    object-fit: contain;
+  }
+
+  span {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    color: var(--tan);
+    font-weight: 700;
+    text-align: center;
+    pointer-events: none;
+  }
+</style>
