@@ -11,3 +11,37 @@ const { wordmarkSrc = `${import.meta.env.BASE_URL}images/dailynu-wordmark.svg` }
     <a class="header-action header-action--donate" href="https://dailynorthwestern.com/2026/08/01/uncategorized/support-the-daily/" target="_blank" rel="noopener noreferrer">Donate</a>
   </div>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+
+  if (header) {
+    let turningPoint = window.scrollY;
+    let hidden = false;
+
+    window.addEventListener("scroll", () => {
+      const root = document.documentElement;
+      const bottom = Math.max(0, root.scrollHeight - root.clientHeight);
+      const position = Math.max(0, Math.min(window.scrollY, bottom));
+
+      if (position === 0) {
+        turningPoint = 0;
+        hidden = false;
+      } else if (hidden) {
+        turningPoint = Math.max(turningPoint, position);
+        if (turningPoint - position >= 3) {
+          turningPoint = position;
+          hidden = false;
+        }
+      } else {
+        turningPoint = Math.min(turningPoint, position);
+        if (position - turningPoint >= 8) {
+          turningPoint = position;
+          hidden = true;
+        }
+      }
+
+      header.toggleAttribute("data-scroll-hidden", hidden);
+    }, { passive: true });
+  }
+</script>

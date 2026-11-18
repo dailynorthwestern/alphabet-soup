@@ -5,6 +5,7 @@ import TranscriptDropdown from './TranscriptDropdown.astro';
 
 interface Props {
   storyTitle: string;
+  studentName: string;
   image?: { src: string; alt: string };
   quote?: string;
   audioSrc?: string;
@@ -12,7 +13,7 @@ interface Props {
   transcript?: string;
 }
 
-const { storyTitle, image, quote, audioSrc, audioPeaks, transcript } = Astro.props;
+const { storyTitle, studentName, image, quote, audioSrc, audioPeaks, transcript } = Astro.props;
 ---
 
 <section class="interview-card" aria-label={`${storyTitle} student introduction`}>
@@ -23,6 +24,7 @@ const { storyTitle, image, quote, audioSrc, audioPeaks, transcript } = Astro.pro
         : <div class="student-photo-placeholder">
             <MediaPlaceholder label="Student profile photo placeholder" />
           </div>}
+      <p class="student-name">{studentName}</p>
       <AudioPlayer src={audioSrc} peaks={audioPeaks} />
       <TranscriptDropdown transcript={transcript} />
     </div>
@@ -43,6 +45,11 @@ const { storyTitle, image, quote, audioSrc, audioPeaks, transcript } = Astro.pro
     width: auto;
     max-width: min(100%, var(--student-portrait-width, 100%));
     height: auto;
+  }
+
+  .student-name {
+    font: 400 1.125rem / 1.2 var(--font-body);
+    text-align: left;
   }
 
   @media (min-width: 701px) {

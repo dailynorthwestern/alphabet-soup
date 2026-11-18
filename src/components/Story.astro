@@ -33,10 +33,10 @@ const { id, title } = Astro.props;
     --student-inset: calc(var(--student-available) * 0.05);
     --student-title-size: clamp(3rem, 6vw, 6rem);
     --student-gap: clamp(0.75rem, 2vh, 1.5rem);
-    /* Reserve room for the audio controls and collapsed transcript. */
+    /* Reserve room for the name, audio controls and collapsed transcript. */
     --student-portrait-height: max(
       8rem,
-      calc(var(--student-available) * 0.9 - var(--student-title-size) - var(--student-gap) - 7rem)
+      calc(var(--student-available) * 0.9 - var(--student-title-size) - var(--student-gap) - 7.5rem)
     );
     display: grid;
     align-content: center;

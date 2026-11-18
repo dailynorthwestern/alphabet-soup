@@ -1,8 +1,12 @@
 ---
+import { getImage } from 'astro:assets';
+import andyPhoto from '../../assets/andy.png';
 import StudentCard from '../StudentCard.astro';
+
+const photo = await getImage({ src: andyPhoto, format: 'webp' });
 
 // Paste the opening student pull quote here.
 const quote = '';
 ---
 
-<StudentCard storyTitle="LOC" quote={quote} />
+<StudentCard storyTitle="LOC" studentName="Andy" image={{ src: photo.src, alt: 'Portrait of Andy' }} quote={quote} />

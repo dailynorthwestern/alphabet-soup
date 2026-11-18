@@ -1,8 +1,12 @@
 ---
+import { getImage } from 'astro:assets';
+import kylePhoto from '../../assets/kyle.png';
 import StudentCard from '../StudentCard.astro';
 
+const photo = await getImage({ src: kylePhoto, format: 'webp' });
+
 // Paste the opening student pull quote here.
-const quote = `"You can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes"`;
+const quote = `“It’s like a major where you do a chem minor, a physics minor and a bio minor all in one.”`;
 ---
 
-<StudentCard storyTitle="ISP" quote={quote} />
+<StudentCard storyTitle="ISP" studentName="Kyle" image={{ src: photo.src, alt: 'Portrait of Kyle' }} quote={quote} />

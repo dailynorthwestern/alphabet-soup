@@ -8,6 +8,10 @@
   background: rgba(255, 255, 255, .97);
   color: #231f20;
   border-bottom: 1px solid #d9d6dc;
+  transition: transform 240ms ease-out;
+}
+.site-header[data-scroll-hidden]:not(:has(:focus-visible)) {
+  transform: translateY(-100%);
 }
 .site-header .header-inner {
   width: var(--shell);
