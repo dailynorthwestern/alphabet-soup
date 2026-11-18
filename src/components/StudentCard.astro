@@ -8,10 +8,11 @@ interface Props {
   image?: { src: string; alt: string };
   quote?: string;
   audioSrc?: string;
+  audioPeaks?: number[];
   transcript?: string;
 }
 
-const { storyTitle, image, quote, audioSrc, transcript } = Astro.props;
+const { storyTitle, image, quote, audioSrc, audioPeaks, transcript } = Astro.props;
 ---
 
 <section class="interview-card" aria-label={`${storyTitle} student introduction`}>
@@ -22,7 +23,7 @@ const { storyTitle, image, quote, audioSrc, transcript } = Astro.props;
         : <div class="student-photo-placeholder">
             <MediaPlaceholder label="Student profile photo placeholder" />
           </div>}
-      <AudioPlayer src={audioSrc} />
+      <AudioPlayer src={audioSrc} peaks={audioPeaks} />
       <TranscriptDropdown transcript={transcript} />
     </div>
     <div class="student-quote">

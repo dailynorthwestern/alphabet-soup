@@ -5,6 +5,14 @@ import StudentCard from '../StudentCard.astro';
 
 const photo = await getImage({ src: mikiPhoto, width: Math.min(mikiPhoto.width, 1200), format: 'webp' });
 const audioSrc = `${import.meta.env.BASE_URL}assets/audio/miki_student_card.mp3`;
+// Peak heights sampled from Miki’s audio.
+const audioPeaks = [
+  61, 91, 100, 47, 21, 80, 82, 80, 74, 74, 71, 56, 77, 61, 49, 50,
+  51, 65, 53, 64, 63, 63, 56, 62, 53, 54, 60, 61, 53, 48, 49, 42,
+  45, 51, 73, 63, 21, 22, 52, 73, 53, 77, 81, 85, 49, 49, 53, 33,
+  59, 82, 77, 61, 57, 62, 53, 72, 59, 38, 63, 51, 48, 57, 66, 61,
+  61, 43, 53, 43, 51, 43, 59, 51, 53, 54, 51, 21,
+];
 const transcript = `I think it's a study of learning how to interpret the world or a situation using numbers, so quantifying it so that we get to explain it easier and we get to answer it easier.`;
 
 // Paste the opening student pull quote here.
@@ -16,6 +24,7 @@ const quote = `"I think it's a study of learning how to interpret the world or a
   quote={quote}
   image={{ src: photo.src, alt: 'Portrait of Miki Hayashi' }}
   audioSrc={audioSrc}
+  audioPeaks={audioPeaks}
   transcript={transcript}
 />
 

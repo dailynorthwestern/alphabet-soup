@@ -1,30 +1,227 @@
 ---
 interface Props {
   src?: string;
+  peaks?: number[];
 }
 
-const { src } = Astro.props;
+const { src, peaks } = Astro.props;
+const bars = peaks?.length ? peaks : Array.from({ length: 64 }, (_, index) =>
+  25 + Math.round(60 * Math.abs(Math.sin(index * 0.62) * Math.cos(index * 0.19)))
+);
+const waveform = bars.map((peak, index) => {
+  const height = Math.max(1, Math.min(100, peak)) / 5;
+  return `M${index * 4 + 2} ${12 - height / 2}v${height}`;
+}).join(' ');
 ---
 
 <div class="audio-player">
-  {!src && <span>Student audio placeholder</span>}
-  <audio controls preload="metadata" src={src} aria-label="Student audio"></audio>
+  {src && <audio hidden preload="metadata" src={src}></audio>}
+  <button type="button" class="play-toggle" aria-label={src ? 'Play audio' : 'Audio unavailable'} disabled></button>
+  <div
+    class="audio-seek"
+    role="slider"
+    tabindex="-1"
+    aria-label="Audio progress"
+    aria-disabled="true"
+    aria-valuemin="0"
+    aria-valuemax="0"
+    aria-valuenow="0"
+  >
+    <svg class="waveform" viewBox={`0 0 ${bars.length * 4} 24`} preserveAspectRatio="none" aria-hidden="true">
+      <path d={waveform} stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none" />
+    </svg>
+  </div>
+  <span class="audio-time" aria-hidden="true">{src ? '0:00 / –:––' : '–:–– / –:––'}</span>
+  <span class="audio-status" role="status"></span>
 </div>
+
+<script>
+  function formatTime(seconds: number) {
+    const wholeSeconds = Math.floor(seconds);
+    return `${Math.floor(wholeSeconds / 60)}:${String(wholeSeconds % 60).padStart(2, "0")}`;
+  }
+
+  for (const player of document.querySelectorAll<HTMLElement>(".audio-player")) {
+    const audio = player.querySelector("audio");
+    const toggle = player.querySelector<HTMLButtonElement>(".play-toggle");
+    const seek = player.querySelector<HTMLElement>(".audio-seek");
+    const time = player.querySelector(".audio-time");
+    const status = player.querySelector(".audio-status");
+    if (!audio || !toggle || !seek || !time || !status) continue;
+
+    const canSeek = () => Number.isFinite(audio.duration) && audio.duration > 0;
+
+    const updateProgress = () => {
+      const hasDuration = canSeek();
+      const elapsed = formatTime(audio.currentTime);
+      const duration = hasDuration ? formatTime(audio.duration) : "–:––";
+      const percent = hasDuration ? audio.currentTime / audio.duration * 100 : 0;
+      seek.tabIndex = hasDuration ? 0 : -1;
+      seek.setAttribute("aria-disabled", String(!hasDuration));
+      seek.setAttribute("aria-valuemax", String(hasDuration ? audio.duration : 0));
+      seek.setAttribute("aria-valuenow", String(audio.currentTime));
+      seek.setAttribute("aria-valuetext", hasDuration ? `${elapsed} of ${duration}` : elapsed);
+      player.style.setProperty("--audio-progress", `${percent}%`);
+      time.textContent = `${elapsed} / ${duration}`;
+    };
+
+    const updatePlayback = () => {
+      const playing = !audio.paused && !audio.ended;
+      toggle.toggleAttribute("data-playing", playing);
+      toggle.setAttribute("aria-label", playing ? "Pause audio" : "Play audio");
+    };
+
+    const seekTo = (seconds: number) => {
+      audio.currentTime = Math.max(0, Math.min(audio.duration, seconds));
+      updateProgress();
+    };
+
+    const seekFromPointer = (event: PointerEvent) => {
+      const bounds = seek.getBoundingClientRect();
+      if (bounds.width > 0) seekTo((event.clientX - bounds.left) / bounds.width * audio.duration);
+    };
+
+    seek.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0 || !canSeek()) return;
+      seek.focus({ preventScroll: true });
+      seek.setPointerCapture(event.pointerId);
+      seekFromPointer(event);
+    });
+
+    seek.addEventListener("pointermove", (event) => {
+      if (seek.hasPointerCapture(event.pointerId) && canSeek()) seekFromPointer(event);
+    });
+
+    seek.addEventListener("keydown", (event) => {
+      if (!canSeek()) return;
+
+      let seconds: number;
+      switch (event.key) {
+        case "ArrowLeft":
+        case "ArrowDown": seconds = audio.currentTime - 1; break;
+        case "ArrowRight":
+        case "ArrowUp": seconds = audio.currentTime + 1; break;
+        case "Home": seconds = 0; break;
+        case "End": seconds = audio.duration; break;
+        default: return;
+      }
+
+      event.preventDefault();
+      seekTo(seconds);
+    });
+
+    toggle.addEventListener("click", () => {
+      status.textContent = "";
+      if (audio.paused) {
+        void audio.play().catch((error: DOMException) => {
+          if (error.name !== "AbortError") status.textContent = "Audio could not be played.";
+          updatePlayback();
+        });
+      } else {
+        audio.pause();
+      }
+    });
+
+    for (const event of ["loadedmetadata", "durationchange", "timeupdate", "seeked"]) {
+      audio.addEventListener(event, updateProgress);
+    }
+    for (const event of ["play", "pause", "ended"]) {
+      audio.addEventListener(event, updatePlayback);
+    }
+
+    toggle.disabled = false;
+    updateProgress();
+  }
+</script>
 
 <style>
   .audio-player {
+    position: relative;
     display: grid;
-    gap: 0.4rem;
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(0.25rem, 1vw, 0.75rem);
+    min-width: 0;
+    min-height: 2.75rem;
+    padding-inline: 0.25rem 0.85rem;
+    border-radius: 999px;
+    background: var(--tan);
+    color: var(--ink);
   }
 
-  span {
-    font-size: 0.875rem;
-    font-weight: 700;
+  .play-toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--dark-red);
+    cursor: pointer;
   }
 
-  audio {
+  .play-toggle:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .play-toggle::before {
+    content: "";
+    margin-left: 0.15rem;
+    border-block: 0.375rem solid transparent;
+    border-left: 0.6rem solid currentColor;
+  }
+
+  .play-toggle[data-playing]::before {
+    width: 0.625rem;
+    height: 0.75rem;
+    margin: 0;
+    border: 0;
+    border-inline: 0.2rem solid currentColor;
+  }
+
+  .audio-seek {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+    height: 2.75rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  .audio-seek[aria-disabled="true"] {
+    cursor: default;
+  }
+
+  .audio-seek:focus-visible {
+    outline: 2px solid var(--dark-red);
+    outline-offset: -2px;
+  }
+
+  .waveform {
     display: block;
     width: 100%;
-    min-width: 0;
+    height: 1.125rem;
+    color: var(--light-salmon-pink);
+    mask-image: linear-gradient(to right, #000 var(--audio-progress, 0%), #0009 var(--audio-progress, 0%));
+    pointer-events: none;
+  }
+
+  .audio-time {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .audio-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 </style>

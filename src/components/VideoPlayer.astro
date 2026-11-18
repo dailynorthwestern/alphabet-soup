@@ -12,30 +12,8 @@ const { src, poster, captionsSrc } = Astro.props;
   <video controls playsinline preload="metadata" src={src} poster={poster} aria-label="Faculty video">
     {captionsSrc && <track kind="captions" src={captionsSrc} srclang="en" label="English" />}
   </video>
-  {src && (
-    <button class="video-play" type="button" aria-label="Play faculty video" hidden></button>
-  )}
   {!src && !poster && <span>Faculty video placeholder</span>}
 </div>
-
-<script>
-  for (const button of document.querySelectorAll<HTMLButtonElement>('.video-play')) {
-    const video = button.parentElement?.querySelector('video');
-    if (!video) continue;
-
-    button.addEventListener('click', () => {
-      void video.play().catch(() => {
-        button.hidden = true;
-        video.focus();
-      });
-    });
-    video.addEventListener('playing', () => {
-      if (document.activeElement === button) video.focus();
-      button.hidden = true;
-    }, { once: true });
-    button.hidden = false;
-  }
-</script>
 
 <style>
   .video-player {
@@ -48,30 +26,6 @@ const { src, poster, captionsSrc } = Astro.props;
     aspect-ratio: 16 / 9;
     background: var(--dark-red);
     object-fit: contain;
-  }
-
-  .video-play:not([hidden]) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    padding: 0;
-    border: 2px solid var(--tan);
-    border-radius: 50%;
-    background: var(--dark-red);
-    color: var(--tan);
-    cursor: pointer;
-  }
-
-  .video-play::before {
-    content: "";
-    margin-left: 0.2rem;
-    border-block: 0.55rem solid transparent;
-    border-left: 0.9rem solid currentColor;
   }
 
   span {
