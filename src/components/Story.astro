@@ -28,10 +28,26 @@ const { id, title } = Astro.props;
     scroll-margin-top: calc(0px - var(--header-height) - 1px);
   }
 
+  .slide--student {
+    --student-available: calc(var(--slide-viewport) - var(--header-height));
+    --student-inset: calc(var(--student-available) * 0.05);
+    --student-title-size: clamp(3rem, 6vw, 6rem);
+    --student-gap: clamp(0.75rem, 2vh, 1.5rem);
+    /* Reserve room for the audio controls and collapsed transcript. */
+    --student-portrait-height: max(
+      8rem,
+      calc(var(--student-available) * 0.9 - var(--student-title-size) - var(--student-gap) - 7rem)
+    );
+    display: grid;
+    align-content: center;
+    gap: var(--student-gap);
+    padding-block: calc(var(--header-height) + var(--student-inset)) var(--student-inset);
+  }
+
   h2 {
     width: 80%;
     margin: 0 auto;
-    font: 400 clamp(3rem, 7vw, 6rem) / 1 var(--font-display);
+    font: 400 var(--student-title-size) / 1 var(--font-display);
     color: var(--dark-red);
   }
 

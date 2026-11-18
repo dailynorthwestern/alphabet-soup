@@ -33,16 +33,10 @@
   padding-top: var(--header-height);
 }
 
-.slide--student,
 .slide--faculty {
   display: grid;
   padding: calc(var(--header-height) + 1rem) 0 clamp(1.5rem, 4vh, 3rem);
   align-items: center;
-}
-
-.slide--student {
-  grid-template-rows: auto 1fr;
-  gap: clamp(1rem, 3vh, 2rem);
 }
 
 .slide--faculty > .interview-card {
