@@ -45,7 +45,14 @@
 
 /* Only the article layers over the pinned student card. */
 .article-transition {
+  --student-scroll-hold: calc(var(--slide-viewport) * 0.1);
   isolation: isolate;
+}
+
+@media screen {
+  .slide--student[data-measured] + .slide--article {
+    margin-block-start: var(--student-scroll-hold);
+  }
 }
 
 .slide--article {
