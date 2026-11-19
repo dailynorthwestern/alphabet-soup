@@ -15,7 +15,7 @@ const stories = [
 ];
 ---
 
-<section class="hero" aria-label="Alphabet Soup" style={`--artwork-ratio: ${artworkRatio}; background-image: url("${background.src}")`}>
+<section id="soup" class="hero" aria-label="Alphabet Soup" tabindex="-1" style={`--artwork-ratio: ${artworkRatio}; background-image: url("${background.src}")`}>
   <div class="hero-artwork">
     <Image
       src={hero}
@@ -96,6 +96,17 @@ const stories = [
     overflow: hidden;
     border-radius: 0.5rem;
     pointer-events: auto;
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .story-nav a {
+      transition: transform 250ms cubic-bezier(0.2, 0.75, 0.35, 1.1);
+    }
+
+    .story-nav a:is(:hover, :focus-visible) {
+      transform: scale(1.12);
+    }
   }
 
   .story-nav img {

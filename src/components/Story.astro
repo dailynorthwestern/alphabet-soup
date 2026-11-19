@@ -11,7 +11,10 @@ const { id, title, holdFaculty = false } = Astro.props;
 <article class="story" aria-labelledby={`${id}-heading`}>
   <div id={id} class="article-transition" tabindex="-1">
     <div class="slide slide--student" data-slide data-pin data-card-fade>
-      <h2 id={`${id}-heading`}>{title}</h2>
+      <div class="student-heading">
+        <h2 id={`${id}-heading`}>{title}</h2>
+        <a class="back-to-soup" href="#soup">↑ Back to the soup</a>
+      </div>
       <slot name="student" />
     </div>
     <div class="slide slide--article" data-slide>
@@ -46,17 +49,46 @@ const { id, title, holdFaculty = false } = Astro.props;
     padding-block: var(--student-inset);
   }
 
-  h2 {
+  .student-heading,
+  .story :global(.interview-card) {
     width: 80%;
-    margin: 0 auto;
+    margin-inline: auto;
+  }
+
+  .student-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  h2 {
+    margin: 0;
     font: 400 var(--student-title-size) / 1 var(--font-display);
     color: var(--dark-red);
   }
 
+  .back-to-soup {
+    font: 400 1.7rem / 1.2 "alphabet-soup-pro", sans-serif;
+    color: var(--dark-red);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transform-origin: right center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .back-to-soup {
+      transition: transform 250ms cubic-bezier(0.2, 0.75, 0.35, 1.1);
+    }
+
+    .back-to-soup:is(:hover, :focus-visible) {
+      transform: scale(1.12);
+    }
+  }
+
   .story :global(.interview-card) {
-    width: 80%;
     min-width: 0;
-    margin-inline: auto;
     display: grid;
     align-items: center;
   }
@@ -69,8 +101,7 @@ const { id, title, holdFaculty = false } = Astro.props;
   }
 
   @media (max-width: 700px) {
-    h2,
-    .story :global(.interview-card) {
+    .slide--faculty :global(.interview-card) {
       width: calc(100% - 2rem);
     }
 
