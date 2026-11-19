@@ -1,12 +1,22 @@
 ---
 import { getImage } from 'astro:assets';
 import andyPhoto from '../../assets/andy.png';
+import audioSrc from '../../assets/loc_student_quote.mp3?url';
 import StudentCard from '../StudentCard.astro';
 
 const photo = await getImage({ src: andyPhoto, format: 'webp' });
 
 // Paste the opening student pull quote here.
-const quote = '';
+const transcript = `I think I was struggling a little bit with Econ, where it's, like, I felt like I was getting quantitative through my Econ classes, but I felt like I wanted to do a little bit more collaboration.
+
+Obviously, Econ is very — there's a lot of tangible work that comes with it and understanding of how markets work and whatnot, and I think that's all crucial, but I think that all of the lessons I learned through LOC and through SESP really apply because organizations change all the time across every industry.`;
+const quote = '"Organizations change all the time across every industry"';
 ---
 
-<StudentCard storyTitle="LOC" studentName="Andy Grossman, LOC ’22" image={{ src: photo.src, alt: 'Portrait of Andy' }} quote={quote} />
+<StudentCard
+  storyTitle="LOC"
+  studentName="Andy Grossman, LOC ’22"
+  image={{ src: photo.src, alt: 'Portrait of Andy' }}
+  quote={quote}
+  audioSrc={audioSrc}
+/>

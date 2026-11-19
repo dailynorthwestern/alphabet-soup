@@ -1,12 +1,24 @@
 ---
 import { getImage } from 'astro:assets';
 import kylePhoto from '../../assets/kyle.png';
+import audioSrc from '../../assets/isp_student_quote.mp3?url';
 import StudentCard from '../StudentCard.astro';
 
 const photo = await getImage({ src: kylePhoto, format: 'webp' });
+
+const transcript = `With this program, it feels like you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes, maybe for your other major.
+
+With this program, it feels like you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes, maybe for your other major.
+`;
 
 // Paste the opening student pull quote here.
 const quote = `“It’s like a major where you do a chem minor, a physics minor and a bio minor all in one.”`;
 ---
 
-<StudentCard storyTitle="ISP" studentName="Kyle Wang, ISP ’29" image={{ src: photo.src, alt: 'Portrait of Kyle' }} quote={quote} />
+<StudentCard
+  storyTitle="ISP"
+  studentName="Kyle Wang, ISP ’29"
+  image={{ src: photo.src, alt: 'Portrait of Kyle' }}
+  quote={quote}
+  audioSrc={audioSrc}
+/>
