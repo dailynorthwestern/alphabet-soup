@@ -26,7 +26,15 @@ Weinberg junior Grant Kahler said he chose the MMSS program because he knew he w
 
 As an adjunct major, the program requires students to meet the requirements of another approved major in addition to the MMSS degree. Kahler is also majoring in economics with a minor in data science. He said he chose to study economics because MMSS courses allow him to pass out of several required courses for the economics major.
 
+<figure class="story-photo">
+
 ![A person sits at a desk looking down at a laptop.](../assets/mmss_inline.jpg)
+
+<figcaption>
+  <span>Weinberg junior Grant Kahler, who is studying MMSS, enjoys the small-group community of the MMSS program.</span>
+  <span class="photo-credit">Jack Greenspan/Daily Northwestern</span>
+</figcaption>
+</figure>
 
 Kahler said he only has to take six classes to complete the economics major because there are many introductory classes he can pass out of having done MMSS. The economics major consists of 14 course requirements.
 

@@ -95,9 +95,30 @@ const hasContent = Boolean(article.rawContent().replace(/<!--[\s\S]*?-->/g, '').
     margin-top: 0.5rem;
   }
 
+  .article-body :global(.story-photo) {
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .article-body :global(.story-photo > figcaption) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 0.25rem 0.75rem;
+    font: 400 0.875rem / 1.35 Georgia, serif;
+    text-align: left;
+  }
+
+  .article-body :global(.story-photo .photo-credit) {
+    text-align: right;
+  }
+
   @media (max-width: 700px) {
     .story-content {
       width: calc(100% - 2rem);
+    }
+
+    .article-body :global(.story-photo > figcaption) {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

@@ -26,7 +26,15 @@ Grossman and Bazan are two such students — both started as economics majors, u
 
 Grossman, now in his fifth season with the Falcons, has worked under three head coaches and two general managers. He said he has been able to fall back on lessons from LOC classes, which “calmed (him) through the uncertainty.” 
 
+<figure class="story-photo">
+
 ![Two people look at the same computer on a desk.](../assets/loc_inline.jpg)
+
+<figcaption>
+  <span>Classes in the LOC concentration focus on collaborative experiences for students.</span>
+  <span class="photo-credit">Lynn-Clara Tun/The Daily Northwestern</span>
+</figcaption>
+</figure>
 
 The flexibility and hands-on opportunities within LOC are a big draw, Bazan said. Upon graduation, Bazan said he wants to pursue medical device sales, where he can combine his interest in business with the interpersonal skills he developed in LOC.
 
