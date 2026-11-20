@@ -50,6 +50,9 @@ const stories = [
       );
     })}
   </nav>
+  <p class="hero-intro">
+    Pop quiz: What does MMSS stand for? How about ISP? LOC, anyone? To some, these acronyms may just be “alphabet soup.” To others, they describe the unique academic programs that define their Northwestern academic experience.
+  </p>
 </section>
 
 <style>
@@ -116,5 +119,21 @@ const stories = [
     width: var(--lettering-width);
     max-width: none;
     height: auto;
+  }
+
+  .hero-intro {
+    position: absolute;
+    inset: 50% 0 0 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: clamp(0.5rem, 2.5vw, 3rem);
+    color: var(--dark-red);
+    font: 400 clamp(0.875rem, 1.4vw, 1.25rem) / 1.25 "aglet-sans", sans-serif;
+    text-align: center;
+    -webkit-text-stroke: 2px var(--tan);
+    paint-order: stroke fill;
+    pointer-events: none;
   }
 </style>
