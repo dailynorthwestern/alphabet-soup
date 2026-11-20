@@ -8,7 +8,7 @@ const { transcript = 'Transcript placeholder' } = Astro.props;
 
 <details>
   <summary>Read transcript</summary>
-  <p>{transcript}</p>
+  <slot><p>{transcript}</p></slot>
 </details>
 
 <style>
@@ -19,7 +19,7 @@ const { transcript = 'Transcript placeholder' } = Astro.props;
     width: fit-content;
   }
 
-  p {
+  details > :global(p) {
     margin: 0.5rem 0 0;
     white-space: pre-line;
   }

@@ -7,9 +7,6 @@ import StudentCard from '../StudentCard.astro';
 const photo = await getImage({ src: andyPhoto, format: 'webp' });
 
 // Paste the opening student pull quote here.
-const transcript = `I think I was struggling a little bit with Econ, where it's, like, I felt like I was getting quantitative through my Econ classes, but I felt like I wanted to do a little bit more collaboration.
-
-Obviously, Econ is very — there's a lot of tangible work that comes with it and understanding of how markets work and whatnot, and I think that's all crucial, but I think that all of the lessons I learned through LOC and through SESP really apply because organizations change all the time across every industry.`;
 const quote = '"Organizations change all the time across every industry"';
 ---
 
@@ -19,4 +16,9 @@ const quote = '"Organizations change all the time across every industry"';
   image={{ src: photo.src, alt: 'Portrait of Andy' }}
   quote={quote}
   audioSrc={audioSrc}
-/>
+>
+  <Fragment slot="transcript">
+    <p>I think I was struggling a little bit with Econ, where it's, like, I felt like I was getting quantitative through my Econ classes, but I felt like I wanted to do a little bit more collaboration.</p>
+    <p>Obviously, Econ is very — there's a lot of tangible work that comes with it and understanding of how markets work and whatnot, and I think that's all crucial, but I think that all of the lessons I learned through LOC and through SESP really apply because <strong>organizations change all the time across every industry</strong>.</p>
+  </Fragment>
+</StudentCard>

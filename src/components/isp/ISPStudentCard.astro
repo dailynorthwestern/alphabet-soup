@@ -6,11 +6,6 @@ import StudentCard from '../StudentCard.astro';
 
 const photo = await getImage({ src: kylePhoto, format: 'webp' });
 
-const transcript = `With this program, it feels like you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes, maybe for your other major.
-
-With this program, it feels like you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes, maybe for your other major.
-`;
-
 // Paste the opening student pull quote here.
 const quote = `“It’s like a major where you do a chem minor, a physics minor and a bio minor all in one.”`;
 ---
@@ -21,4 +16,9 @@ const quote = `“It’s like a major where you do a chem minor, a physics minor
   image={{ src: photo.src, alt: 'Portrait of Kyle' }}
   quote={quote}
   audioSrc={audioSrc}
-/>
+>
+  <Fragment slot="transcript">
+    <p>With this program, it feels like you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes, maybe for your other major.</p>
+    <p>With this program, it feels like <strong>you can learn from the experts in their field, and then you can kind of combine them and see it show up in your other classes</strong>, maybe for your other major.</p>
+  </Fragment>
+</StudentCard>

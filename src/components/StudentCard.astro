@@ -26,7 +26,11 @@ const { storyTitle, studentName, image, quote, audioSrc, audioPeaks, transcript 
           </div>}
       <p class="student-name">{studentName}</p>
       <AudioPlayer src={audioSrc} peaks={audioPeaks} />
-      <TranscriptDropdown transcript={transcript} />
+      {Astro.slots.has('transcript') ? (
+        <TranscriptDropdown><slot name="transcript" /></TranscriptDropdown>
+      ) : (
+        <TranscriptDropdown transcript={transcript} />
+      )}
     </div>
     <div class="student-quote">
       {quote ? <blockquote>{quote}</blockquote> : <p>Student quote placeholder</p>}
